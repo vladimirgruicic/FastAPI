@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Item Created</title>
+        <link rel="stylesheet" href="/static/css/items_created.css">
+    </head>
+    <body>
+        <h1>Item created sucessfully!</h1>
+        <div>
+            <p><strong>Name:</strong> {{ item.name }}</p>
+            <p><strong>Price:</strong> {{ item.price }}</p>
+            <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+        </div>
+        <div>
+            <a href="/items">Back to Items list</a>
+        </div>
+    </body>
+</html>
