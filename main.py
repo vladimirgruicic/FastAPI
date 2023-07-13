@@ -5,7 +5,7 @@ from database import initialize_database, get_db
 from item import create_item, router as item_router
 from user import create_user, router as user_router
 from user_request import create_user_request, router as user_request_router
-from models import Item
+from models import Item, User
 
 # App initialization.
 app = FastAPI()
@@ -29,7 +29,7 @@ app.include_router(user_request_router)
 def home(request: Request):
     return templates.TemplateResponse("home.html", {"request": request})
 
-# Route for retreiving data from the database.
+# Route for retreiving items data from the database.
 @app.get("/items_list")
 def get_items(request: Request):
     db = get_db()
@@ -58,12 +58,31 @@ async def create_item_route(request: Request):
     create_item(item)
 
     return templates.TemplateResponse("items_created.html", {"request": request, "item": item})
-    
 
-@app.post("/users")
-def create_user_route(user):
-    return create_user(user)
+ # Route for retreiving items data from the database.   
+@app.get("/users_list")
+def get_users(request: Request):
+    db = get_db()
+    cursor = db. cursor()
 
-@app.post("/user_requests")
-def create_user_request_route(user_request):
-    return create_user_request(user_request)
+    cursor.execute("SELECT * FROM users")
+    users = cursor.fetchall()
+
+    return templates.TemplateResponse("users_list.html", {"request": request, "users": users})
+
+
+@app.get("/create_user")
+def create_user_form(request: Request):
+    return templates.TemplateResponse("create_user.html", {"request": request})
+
+@app.post("/create_user")
+async def create_user_route(request: Request):
+    form_data = await request.form()
+    username = form_data.get("username")
+    email = form_data.get("email")
+
+    # Insert data.
+    user = User(username=username, email=email)
+    create_user(user)
+
+    return templates.TemplateResponse("users_created.html", {"request": request, "user": user})

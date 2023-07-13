@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>User details</title>
+        <link rel="stylesheet" href="{{ url_for('static', path='/css/users_list.css')}}">
+    </head>
+    <body>
+        <h1>User details</h1>
+        {% for user in users %}
+        <div>
+            <p><strong>Username:</strong> {{ user[1] }}</p>
+            <p><strong>Email:</strong> {{ user[2] }}</p>
+        </div>
+        {% endfor %}
+        <div>
+            <a href="/users_list">Back to Users List</a>
+        </div>
+    </body>
+</html>
